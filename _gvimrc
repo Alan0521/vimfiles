@@ -1,7 +1,7 @@
 """"""""""""""""""""""""""""""""""""""
-" Version: 1.0.0
+" Version: 1.0.1
 """"""""""""""""""""""""""""""""""""""
-" 2011-09-21 14:33
+" 2011-09-21 16:22
 """"""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""
@@ -11,7 +11,7 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 set runtimepath+=~/.vim/vimgdb_runtime
 set runtimepath+=~/.vim/extra
-
+"judge the system 
 function! MySys()
   if has("win32")
     return "windows"
@@ -19,6 +19,11 @@ function! MySys()
     return "linux"
   endif
 endfunction
+"set the menu & the message to English
+set langmenu=en_US
+let $LANG = 'en_US'
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim 
 
 """"""""""""""""""""""""""""""""""""""
 " Basic 常规
@@ -53,6 +58,15 @@ autocmd BufWritePre Makefile :%s/\s\+$//e
 "设置窗口大小
 "set lines=40
 "set columns=80
+"set gvim
+if has("gui_running")
+    set guioptions-=m " 隐藏菜单栏
+    set guioptions-=T " 隐藏工具栏
+    set guioptions-=L " 隐藏左侧滚动条
+    set guioptions-=r " 隐藏右侧滚动条
+    set guioptions-=b " 隐藏底部滚动条
+    set showtabline=0 " 隐藏Tab栏
+endif
 
 """"""""""""""""""""""""""""""""""""""
 " Style 界面
@@ -170,11 +184,11 @@ elseif MySys() == 'windows'
     " Set helplang
     set helplang=cn
     "Fast reloading of the _vimrs
-    map <silent> <leader>ss :source ~/_vimrc<cr>
+    map <silent> <leader>sv :source ~/_gvimrc<cr>
     "Fast editing of _vimrc
-    map <silent> <leader>ee :call SwitchToBuf("~/_vimrc")<cr>
+    map <silent> <leader>ev :call SwitchToBuf("~/_gvimrc")<cr>
     "When _vimrc is edited, reload it
-    autocmd! bufwritepost _vimrc source ~/_vimrc
+    autocmd! bufwritepost _gvimrc source ~/_gvimrc
 endif
 
 " For windows version
@@ -283,6 +297,7 @@ set mousemodel=popup
 nmap <silent> <leader>q :q<cr> 
 nmap <silent> <leader>w :w<cr> 
 nmap <silent> <leader>bn :bn<cr> 
+nmap <silent> <leader>bd :bd<cr> 
 
 nmap <silent> <leader>fe :NERDTreeToggle<cr> 
 nmap <silent> <leader>tl :TlistToggle<cr> 
