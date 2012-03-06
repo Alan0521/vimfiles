@@ -1,7 +1,7 @@
 """"""""""""""""""""""""""""""""""""""
 " Version: 1.0.1
 """"""""""""""""""""""""""""""""""""""
-" 2011-11-30 10:22
+" 2012-03-06 11:27
 """"""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""
@@ -133,14 +133,20 @@ set linebreak
 "C风格缩进
 set cindent
 "set fold
-autocmd FileType c,cpp  setl fdm=syntax | setl fen 
+"autocmd FileType c,cpp  setl fdm=syntax | setl fen 
+autocmd FileType c,cpp  setl fdm=syntax | setl fen | setl foldlevel=100
 
 "set guifont=terminus\ 10
 if MySys() == 'linux'
 	set guifont=MONACO\ 10
 	set guifontwide=youyuan\ 10
 elseif MySys() == 'windows'
-	set guifont=MONACO:h10
+	"set guifont=MONACO:h10
+	"set guifont=consolas:h12
+	set guifont=Courier_New:h12:cANSI
+	"set guifontwide=YaHei\ Consolas\ Hybrid:h10
+	"set guifontwide=YaHei:h10
+	"set guifont=monaco:h10:cANSI
 	"set guifontwide=YouYuan:h24:cGB2312
 	"set gfw=Yahei_Mono:h15:cGB2312
 endif 
