@@ -1,7 +1,7 @@
 """"""""""""""""""""""""""""""""""""""
 " Version: 1.0.1
 """"""""""""""""""""""""""""""""""""""
-" 2012-03-06 11:27
+" 2012-03-22 21:34
 """"""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""
@@ -14,11 +14,11 @@ set runtimepath+=~/.vim/extra
 
 "judge the system 
 function! MySys()
-  if has("win32")
-    return "windows"
-  else
-    return "linux"
-  endif
+	if has("win32")
+		return "windows"
+	else
+		return "linux"
+	endif
 endfunction
 
 "set the menu & the message to English
@@ -63,12 +63,12 @@ autocmd BufWritePre Makefile :%s/\s\+$//e
 
 "set gvim
 if has("gui_running")
-    set guioptions-=m " 隐藏菜单栏
-    set guioptions-=T " 隐藏工具栏
-    set guioptions-=L " 隐藏左侧滚动条
-    set guioptions-=r " 隐藏右侧滚动条
-    set guioptions-=b " 隐藏底部滚动条
-    "set showtabline=0 " 隐藏Tab栏
+	set guioptions-=m " 隐藏菜单栏
+	set guioptions-=T " 隐藏工具栏
+	set guioptions-=L " 隐藏左侧滚动条
+	set guioptions-=r " 隐藏右侧滚动条
+	set guioptions-=b " 隐藏底部滚动条
+	"set showtabline=0 " 隐藏Tab栏
 endif
 
 """"""""""""""""""""""""""""""""""""""
@@ -103,8 +103,7 @@ set magic
 "关闭提示音
 set noerrorbells
 set novisualbell
-"set vb t_vb=
-"autocmd GUIEnter * set vb t_vb= 
+"set vb t_vb= "autocmd GUIEnter * set vb t_vb= 
 autocmd VimEnter * set vb t_vb= 
 "自动匹配括号
 set showmatch
@@ -411,7 +410,7 @@ endfunction
 let g:LookupFile_LookupFunc = 'LookupFile_IgnoreCaseFunc' 
 
 """"""""""""""""""""""""""""""""""""""
-" lookupfile setting
+" Make setting
 """"""""""""""""""""""""""""""""""""""
 autocmd FileType c,cpp  map <buffer> <leader><space> :w<cr>:make<cr>
 nmap <leader>cn :cn<cr>
@@ -609,7 +608,62 @@ let g:acp_enableAtStartup = 0
 """"""""""""""""""""""""""""""""""""""
 " Code_complete
 """"""""""""""""""""""""""""""""""""""
-let g:completekey = "<c-j>"
+let g:completekey = "<C-j>"
+
+""""""""""""""""""""""""""""""""""""""
+" Code_complete
+""""""""""""""""""""""""""""""""""""""
+if MySys() == 'linux'
+	if !has("gui_running")
+		imap = <M-=>3<BS>
+		imap - <M-->3<BS>
+	endif
+endif
+
+""""""""""""""""""""""""""""""""""""""
+" Ctags
+""""""""""""""""""""""""""""""""""""""
+"ctags -R --c-kinds=+p --fields=+iaS --extra=+q -f ~/.tags/systags /usr/include /usr/local/include
+if MySys() == 'linux'
+	set tags+=~/.tags/systags
+elseif MySys() == 'windows'
+	set tags+=~/_tags/systags
+endif
+
+" UpdateCtags
+function! UpdateCtags()
+	!ctags -R --c-kinds=+p --fields=+iaS --extra=+q 
+	"!ctags -R --c++-types=+px --excmd=pattern --exclude=Makefile --exclude=.
+endfunction
+"function! UpdateCtags()
+	"let curdir=getcwd()
+	"while !filereadable("./tags")
+		"cd ..
+		"if getcwd() == "/"
+			"break
+		"endif
+	"endwhile
+	"if filewritable("./tags")
+		"!ctags -R --c++-types=+px --excmd=pattern --exclude=Makefile --exclude=.
+	"endif
+	"execute ":cd " . curdir
+"endfunction
+
+" Call Function
+command! UpdateCtags call UpdateCtags()
+
+" AutoUpdateCtags
+let g:AutoUpdateCtagsEnable = 1
+command! AutoUpdateCtagsEnable let g:AutoUpdateCtagsEnable = 1
+command! AutoUpdateCtagsDisable let g:AutoUpdateCtagsEnable = 0
+
+function! AutoUpdateCtags()
+	if g:AutoUpdateCtagsEnable == 1
+		call UpdateCtags()
+	endif
+endfunction
+
+autocmd BufWrite *.cpp,*.h,*.c call AutoUpdateCtags() 
 
 """"""""""""""""""""""""""""""""""""""
 " The end 
