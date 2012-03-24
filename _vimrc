@@ -1,7 +1,7 @@
 """"""""""""""""""""""""""""""""""""""
 " Version: 1.0.1
 """"""""""""""""""""""""""""""""""""""
-" 2012-03-22 21:34
+" 2012-03-24 20:53
 """"""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""
@@ -103,7 +103,8 @@ set magic
 "关闭提示音
 set noerrorbells
 set novisualbell
-"set vb t_vb= "autocmd GUIEnter * set vb t_vb= 
+"set vb t_vb=
+"autocmd GUIEnter * set vb t_vb= 
 autocmd VimEnter * set vb t_vb= 
 "自动匹配括号
 set showmatch
@@ -229,7 +230,13 @@ endif
 "autocmd BufWritePre .vimrc execute '<ESC>Go<C-R>=strftime("%c")<CR><ESC>'
 "autocmd BufWritePre .vimrc execute '/\" *The end/s@:.*$@\=strftime(":\t%Y-%m-%d %H:%M")@'
 "autocmd BufWritePre .vimrc execute "normal Gkc$\" \<C-R>=\strftime(\"%Y-%m-%d %H:%M\")\<CR>\<ESC>"
-autocmd BufWritePre *vimrc execute "normal ggjjjc$\" \<C-R>=\strftime(\"%Y-%m-%d %H:%M\")\<CR>\<ESC>"
+autocmd BufWritePre *vimrc execute "normal ggjjjc$\" \<C-R>=\strftime(\"%Y-%m-%d %H:%M\")\<CR>\<ESC>\<C-o>"
+"autocmd BufWritePre *vimrc call UpdateVimrcTime()
+
+"function! UpdateVimrcTime()
+	"execute "normal ggjjjc$\" \<C-R>=\strftime(\"%Y-%m-%d %H:%M\")\<CR>\<ESC>\<C-o>"
+	"source ~/.vimrc
+"endfunction
 
 "进行版权声明的设置
 "添加或更新头
@@ -269,7 +276,7 @@ function! TitleDet()
     while n < 10
         let line = getline(n)
         if line =~ '^\//\s*\S*Last\smodified:\S*.*$'
-            call UpdateTitle()
+           call UpdateTitle()
             return
         endif
         let n = n + 1
@@ -623,7 +630,7 @@ endif
 """"""""""""""""""""""""""""""""""""""
 " Ctags
 """"""""""""""""""""""""""""""""""""""
-"ctags -R --c-kinds=+p --fields=+iaS --extra=+q -f ~/.tags/systags /usr/include /usr/local/include
+"ctags -R --c++-kinds=+p --fields=+iaS --extra=+q -f ~/.tags/systags /usr/include /usr/local/include
 if MySys() == 'linux'
 	set tags+=~/.tags/systags
 elseif MySys() == 'windows'
@@ -632,7 +639,7 @@ endif
 
 " UpdateCtags
 function! UpdateCtags()
-	!ctags -R --c-kinds=+p --fields=+iaS --extra=+q 
+	!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q 
 	"!ctags -R --c++-types=+px --excmd=pattern --exclude=Makefile --exclude=.
 endfunction
 "function! UpdateCtags()
@@ -668,3 +675,7 @@ autocmd BufWrite *.cpp,*.h,*.c call AutoUpdateCtags()
 """"""""""""""""""""""""""""""""""""""
 " The end 
 """"""""""""""""""""""""""""""""""""""
+
+
+
+
